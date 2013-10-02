@@ -48,14 +48,14 @@ namespace Inedo.BuildMasterExtensions.PHPUnit
             if (String.IsNullOrEmpty(configurer.PhpExecutablePath)) throw new InvalidOperationException("PHP executable path is not set in the configurer");
             if (String.IsNullOrEmpty(configurer.PhpUnitScriptPath)) throw new InvalidOperationException("PHPUnit script path is not set in the configurer");
 
-            string tmpXmlPath = Path.Combine(this.RemoteConfiguration.TempDirectory, Guid.NewGuid().ToString() + ".xml");
+            string tmpXmlPath = Path.Combine(this.Context.TempDirectory, Guid.NewGuid().ToString() + ".xml");
 
             DateTime testStart = DateTime.Now;
 
             ExecuteCommandLine(
                 configurer.PhpExecutablePath,
                 String.Format("{0} {1} --log-junit {2} {3}", QuotePath(configurer.PhpUnitScriptPath), this.AdditionalArguments, QuotePath(tmpXmlPath), QuotePath(this.TestToRun)),
-                this.RemoteConfiguration.SourceDirectory
+                this.Context.SourceDirectory
             );
 
             if (!File.Exists(tmpXmlPath))
